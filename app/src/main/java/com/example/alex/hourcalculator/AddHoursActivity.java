@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.util.Date;
+
 public class AddHoursActivity extends AppCompatActivity implements TimePickerFragment.TimePickedListener{
 
     private boolean isStartHour = false;
@@ -15,7 +17,7 @@ public class AddHoursActivity extends AppCompatActivity implements TimePickerFra
     int startHour;
     int startMinutes;
     int endHour;
-    int endMInutes;
+    int endMinutes;
 
     EditText startHourtext;
     EditText endHourText ;
@@ -30,12 +32,27 @@ public class AddHoursActivity extends AppCompatActivity implements TimePickerFra
         startHour = 9;
         startMinutes = 0;
         endHour = 18;
-        endMInutes = 0;
+        endMinutes = 0;
+
+        Date startdate = new Date();
+        Date endDate = new Date();
+        startdate.setHours(startHour);
+        startdate.setMinutes(startMinutes);
+        endDate.setHours(endHour);
+        endDate.setMinutes(endMinutes);
+
+        long millis = endDate.getTime() - startdate.getTime();
+        int finalHour = (int) millis/(1000 * 60 * 60);
+        int finalMins = (int) (millis/(1000*60)) % 60;
 
         Button setStartHour = (Button) findViewById(R.id.setStartHourBtn);
         startHourtext = (EditText) findViewById(R.id.startTimeTxt);
         endHourText = (EditText) findViewById(R.id.endTimeTxt);
         finalHourtext = (EditText) findViewById(R.id.finalTimeTxt);
+
+        startHourtext.setText(Integer.toString(startHour) + ": " + Integer.toString(startMinutes));
+        endHourText.setText(Integer.toString(endHour) + ": " + Integer.toString(endMinutes));
+        finalHourtext.setText(Integer.toString(finalHour) + ": " + Integer.toString(finalMins));
 
         setStartHour.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -68,7 +85,7 @@ public class AddHoursActivity extends AppCompatActivity implements TimePickerFra
         }
         else {
             bundle.putInt("hour", endHour);
-            bundle.putInt("minutes", endMInutes);
+            bundle.putInt("minutes", endMinutes);
         }
         newFragment.setArguments(bundle);
         newFragment.show(getSupportFragmentManager(), "time picker");
@@ -80,11 +97,37 @@ public class AddHoursActivity extends AppCompatActivity implements TimePickerFra
             startHourtext.setText(Integer.toString(hour) + ": " + Integer.toString(minutes));
             startHour = hour;
             startMinutes = minutes;
+
+            Date startdate = new Date();
+            Date endDate = new Date();
+            startdate.setHours(startHour);
+            startdate.setMinutes(startMinutes);
+            endDate.setHours(endHour);
+            endDate.setMinutes(endMinutes);
+
+            long millis = endDate.getTime() - startdate.getTime();
+            int finalHour = (int) millis/(1000 * 60 * 60);
+            int finalMins = (int) (millis/(1000*60)) % 60;
+
+            finalHourtext.setText(Integer.toString(finalHour) + ": " + Integer.toString(finalMins));
         }
         else{
             endHourText.setText(Integer.toString(hour) + ": " + Integer.toString(minutes));
             endHour = hour;
-            endMInutes = minutes;
+            endMinutes = minutes;
+
+            Date startdate = new Date();
+            Date endDate = new Date();
+            startdate.setHours(startHour);
+            startdate.setMinutes(startMinutes);
+            endDate.setHours(endHour);
+            endDate.setMinutes(endMinutes);
+
+            long millis = endDate.getTime() - startdate.getTime();
+            int finalHour = (int) millis/(1000 * 60 * 60);
+            int finalMins = (int) (millis/(1000*60)) % 60;
+
+            finalHourtext.setText(Integer.toString(finalHour) + ": " + Integer.toString(finalMins));
         }
     }
 }
