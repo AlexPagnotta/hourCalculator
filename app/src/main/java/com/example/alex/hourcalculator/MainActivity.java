@@ -8,13 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
-import java.sql.Time;
 
-import javax.xml.datatype.Duration;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +28,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent myIntent = new Intent(MainActivity.this, AddHoursActivity.class);
                 MainActivity.this.startActivityForResult(myIntent, 0);
+            }
+        });
+
+        Button resetButton = (Button) findViewById(R.id.resetHoursBtn);
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                hoursList.clear();
+                hoursSumText.setText("Aggiungi un orario");
             }
         });
 
@@ -68,12 +71,21 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode,int resultCode, Intent data)
     {
-        int finalHour = data.getIntExtra("finalHour",0);
-        int finalMinutes = data.getIntExtra("finalMinutes", 0);
+        if (requestCode == 0 && data != null) {
+            if (resultCode == RESULT_OK) {
+                int finalHour = data.getIntExtra("finalHour",0);
+                int finalMinutes = data.getIntExtra("finalMinutes", 0);
 
-        hoursList.add(new Pair<>(finalHour, finalMinutes));
+                hoursList.add(new Pair<>(finalHour, finalMinutes));
 
-        UpdateHours();
+                UpdateHours();
+            }
+            if (resultCode == RESULT_CANCELED) {
+
+            }
+        }
+
+
     }
 
 
