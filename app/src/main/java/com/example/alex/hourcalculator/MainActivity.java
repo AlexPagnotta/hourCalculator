@@ -1,20 +1,24 @@
 package com.example.alex.hourcalculator;
 
 import android.content.Intent;
+import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
+import java.sql.Time;
+
+import javax.xml.datatype.Duration;
 
 public class MainActivity extends AppCompatActivity {
 
-    List<Date> hoursList;
+    final List<Pair<Integer, Integer>> hoursList = new ArrayList<>();
     EditText hoursSumText;
 
     @Override
@@ -23,8 +27,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         hoursSumText = (EditText) findViewById(R.id.hoursSumText);
-
-        hoursList = new ArrayList<>();
 
         Button addButton = (Button) findViewById(R.id.addHoursBtn);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -41,16 +43,25 @@ public class MainActivity extends AppCompatActivity {
             hoursSumText.setText("Aggiungi un orario");
         }
         else{
-            long millis =0;
+            //TimeZone timeZone = TimeZone.getTimeZone("UTC");
+            //final Calendar sum = Calendar.getInstance(timeZone);
+            //sum.setTimeInMillis(0);
+            //sum.setTimeZone(TimeZone.);
 
-            for(Date date:hoursList){
-                millis = millis + date.getTime();
+            int sum = 0;
+
+            for(Pair<Integer,Integer> pair:hoursList){
+                int hours = pair.first;
+                int minutes = pair.second;
+
+                int mins = hours * 60 + minutes;
+                sum += mins;
+
+                //sum.add(Calendar.HOUR, hours);
+                //sum.add(Calendar.MINUTE, minutes);
             }
 
-            int sumHour = (int) millis/(1000 * 60 * 60);
-            int sumMinutes = (int) (millis/(1000*60)) % 60;
-
-            hoursSumText.setText(Integer.toString(sumHour)+": " + Integer.toString(sumMinutes));
+            hoursSumText.setText(Integer.toString((int)Math.floor(sum/60))+": " + Integer.toString(sum % 60 ));
         }
     }
 
@@ -60,11 +71,7 @@ public class MainActivity extends AppCompatActivity {
         int finalHour = data.getIntExtra("finalHour",0);
         int finalMinutes = data.getIntExtra("finalMinutes", 0);
 
-        Date date = new Date();
-        date.setHours(finalHour);
-        date.setMinutes(finalMinutes);
-
-        hoursList.add(date);
+        hoursList.add(new Pair<>(finalHour, finalMinutes));
 
         UpdateHours();
     }
