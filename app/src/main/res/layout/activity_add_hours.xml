@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.alex.hourcalculator.AddHoursActivity"
+    tools:layout_editor_absoluteY="81dp"
+    tools:layout_editor_absoluteX="0dp">
+
+    <Button
+        android:id="@+id/setStartHourBtn"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Imposta ora di inizio"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/setEndHourBtn"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Imposta ora di fine"
+        android:layout_marginRight="16dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="38dp"
+        app:layout_constraintTop_toBottomOf="@+id/setStartHourBtn" />
+
+    <Button
+        android:id="@+id/saveHours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Salva ore"
+        android:layout_marginRight="64dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="16dp" />
+
+    <EditText
+        android:id="@+id/startTimeTxt"
+        android:layout_width="118dp"
+        android:layout_height="43dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:enabled="false"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/endTimeTxt"
+        android:layout_width="118dp"
+        android:layout_height="43dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="35dp"
+        android:ems="10"
+        android:enabled="false"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/startTimeTxt" />
+
+    <EditText
+        android:id="@+id/finalTimeTxt"
+        android:layout_width="118dp"
+        android:layout_height="43dp"
+        android:ems="10"
+        android:enabled="false"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/saveHours"
+        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.08"
+        android:layout_marginBottom="16dp" />
+
+
+</android.support.constraint.ConstraintLayout>
