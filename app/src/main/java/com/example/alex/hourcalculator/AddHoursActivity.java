@@ -18,6 +18,8 @@ public class AddHoursActivity extends AppCompatActivity implements TimePickerFra
     int startMinutes;
     int endHour;
     int endMinutes;
+    int finalHour;
+    int finalMinutes;
 
     EditText startHourtext;
     EditText endHourText ;
@@ -42,8 +44,8 @@ public class AddHoursActivity extends AppCompatActivity implements TimePickerFra
         endDate.setMinutes(endMinutes);
 
         long millis = endDate.getTime() - startdate.getTime();
-        int finalHour = (int) millis/(1000 * 60 * 60);
-        int finalMins = (int) (millis/(1000*60)) % 60;
+        finalHour = (int) millis/(1000 * 60 * 60);
+        finalMinutes = (int) (millis/(1000*60)) % 60;
 
         Button setStartHour = (Button) findViewById(R.id.setStartHourBtn);
         startHourtext = (EditText) findViewById(R.id.startTimeTxt);
@@ -52,7 +54,7 @@ public class AddHoursActivity extends AppCompatActivity implements TimePickerFra
 
         startHourtext.setText(Integer.toString(startHour) + ": " + Integer.toString(startMinutes));
         endHourText.setText(Integer.toString(endHour) + ": " + Integer.toString(endMinutes));
-        finalHourtext.setText(Integer.toString(finalHour) + ": " + Integer.toString(finalMins));
+        finalHourtext.setText(Integer.toString(finalHour) + ": " + Integer.toString(finalMinutes));
 
         setStartHour.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -72,6 +74,11 @@ public class AddHoursActivity extends AppCompatActivity implements TimePickerFra
         Button saveHours = (Button) findViewById(R.id.saveHours);
         saveHours.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Intent myIntent = new Intent(AddHoursActivity.this, MainActivity.class);
+                myIntent.putExtra("finalHour", finalHour);
+                myIntent.putExtra("finalMinutes", finalMinutes);
+                setResult(RESULT_OK, myIntent);
+                finish();
             }
         });
     }
@@ -106,10 +113,10 @@ public class AddHoursActivity extends AppCompatActivity implements TimePickerFra
             endDate.setMinutes(endMinutes);
 
             long millis = endDate.getTime() - startdate.getTime();
-            int finalHour = (int) millis/(1000 * 60 * 60);
-            int finalMins = (int) (millis/(1000*60)) % 60;
+            finalHour = (int) millis/(1000 * 60 * 60);
+            finalMinutes = (int) (millis/(1000*60)) % 60;
 
-            finalHourtext.setText(Integer.toString(finalHour) + ": " + Integer.toString(finalMins));
+            finalHourtext.setText(Integer.toString(finalHour) + ": " + Integer.toString(finalMinutes));
         }
         else{
             endHourText.setText(Integer.toString(hour) + ": " + Integer.toString(minutes));
@@ -124,10 +131,10 @@ public class AddHoursActivity extends AppCompatActivity implements TimePickerFra
             endDate.setMinutes(endMinutes);
 
             long millis = endDate.getTime() - startdate.getTime();
-            int finalHour = (int) millis/(1000 * 60 * 60);
-            int finalMins = (int) (millis/(1000*60)) % 60;
+            finalHour = (int) millis/(1000 * 60 * 60);
+            finalMinutes = (int) (millis/(1000*60)) % 60;
 
-            finalHourtext.setText(Integer.toString(finalHour) + ": " + Integer.toString(finalMins));
+            finalHourtext.setText(Integer.toString(finalHour) + ": " + Integer.toString(finalMinutes));
         }
     }
 }
