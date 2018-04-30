@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import com.robinhood.ticker.TickerUtils;
+import com.robinhood.ticker.TickerView;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     Button addHoursBtn;
     final List<Pair<Integer, Integer>> hoursList = new ArrayList<>();
     EditText hoursSumText;
+    TickerView hoursTickerView;
 
     int startHour;
     int startMinutes;
@@ -40,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
 
         TimePicker endTimePicker = (TimePicker) findViewById(R.id.endTimePicker);
         endTimePicker.setIs24HourView(true);
+
+        hoursTickerView = (TickerView) findViewById(R.id.tickerView);
+        hoursTickerView.setCharacterLists(TickerUtils.provideNumberList());
+        hoursTickerView.setText("0 Ore");
 
         startHour=8;
         startMinutes=30;
@@ -65,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         resetButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 hoursList.clear();
-                hoursSumText.setText("Aggiungi un orario");
+                hoursTickerView.setText("0 Ore");
             }
         });
 
@@ -105,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void UpdateHours(){
         if(hoursList.size() == 0){
-            hoursSumText.setText("Aggiungi un orario");
+            hoursSumText.setText("0 Ore");
         }
         else{
             int sum = 0;
@@ -118,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                 sum += mins;
             }
 
-            hoursSumText.setText(Integer.toString((int)Math.floor(sum/60))+": " + Integer.toString(sum % 60 ));
+            hoursTickerView.setText(Integer.toString((int)Math.floor(sum/60))+" Ore e " + Integer.toString(sum % 60 ) + "Minuti");
         }
     }
 
