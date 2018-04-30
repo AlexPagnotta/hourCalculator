@@ -21,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
 
     Button addHoursBtn;
     final List<Pair<Integer, Integer>> hoursList = new ArrayList<>();
-    EditText hoursSumText;
     TickerView hoursTickerView;
 
     int startHour;
@@ -33,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        hoursSumText = (EditText) findViewById(R.id.hoursSumText);
 
         addHoursBtn = (Button) findViewById(R.id.addHoursBtn);
         Button resetButton = (Button) findViewById(R.id.resetHoursBtn);
@@ -113,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void UpdateHours(){
         if(hoursList.size() == 0){
-            hoursSumText.setText("0 Ore");
+            hoursTickerView.setText("0 Ore");
         }
         else{
             int sum = 0;
