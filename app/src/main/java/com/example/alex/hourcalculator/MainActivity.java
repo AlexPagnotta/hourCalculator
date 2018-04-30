@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                 sum += mins;
             }
 
-            hoursTickerView.setText(Integer.toString((int)Math.floor(sum/60))+" Ore e " + Integer.toString(sum % 60 ) + "Minuti");
+            hoursTickerView.setText(Integer.toString((int)Math.floor(sum/60))+" Ore e " + Integer.toString(sum % 60 ) + " Minuti");
         }
     }
 
