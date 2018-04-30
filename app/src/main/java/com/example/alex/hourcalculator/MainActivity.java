@@ -34,9 +34,22 @@ public class MainActivity extends AppCompatActivity {
 
         final TimePicker startTimePicker = (TimePicker) findViewById(R.id.startTimePicker);
         startTimePicker.setOnTimeChangedListener(startTimeChangedListener);
+        startTimePicker.setIs24HourView(true);
 
         TimePicker endTimePicker = (TimePicker) findViewById(R.id.endTimePicker);
         endTimePicker.setOnTimeChangedListener(endTimeChangedListener);
+        endTimePicker.setIs24HourView(true);
+
+        startHour=8;
+        startMinutes=30;
+        endHour=18;
+        endMinutes=0;
+
+        startTimePicker.setCurrentHour(8);
+        startTimePicker.setCurrentMinute(30);
+
+        endTimePicker.setCurrentHour(18);
+        endTimePicker.setCurrentMinute(0);
 
         addHoursBtn = (Button) findViewById(R.id.addHoursBtn);
         addHoursBtn.setOnClickListener(new View.OnClickListener() {
@@ -109,6 +122,10 @@ public class MainActivity extends AppCompatActivity {
         int differenceMinutes = (int) (millis/(1000*60)) % 60;
 
         return new Pair<>(differenceHours,differenceMinutes);
+    }
+
+    private boolean AreDateValid(){
+        return true;
     }
 
     @Override
