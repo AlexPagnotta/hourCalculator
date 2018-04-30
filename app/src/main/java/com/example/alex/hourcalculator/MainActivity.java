@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.robinhood.ticker.TickerUtils;
 import com.robinhood.ticker.TickerView;
@@ -159,25 +160,5 @@ public class MainActivity extends AppCompatActivity {
 
         return true;
     }
-
-    @Override
-    public void onActivityResult(int requestCode,int resultCode, Intent data)
-    {
-        if (requestCode == 0 && data != null) {
-            if (resultCode == RESULT_OK) {
-                int finalHour = data.getIntExtra("finalHour",0);
-                int finalMinutes = data.getIntExtra("finalMinutes", 0);
-
-                hoursList.add(new Pair<>(finalHour, finalMinutes));
-
-                UpdateHours();
-            }
-            if (resultCode == RESULT_CANCELED) {
-
-            }
-        }
-
-    }
-
 
 }
