@@ -32,12 +32,13 @@ public class MainActivity extends AppCompatActivity {
 
         hoursSumText = (EditText) findViewById(R.id.hoursSumText);
 
-        final TimePicker startTimePicker = (TimePicker) findViewById(R.id.startTimePicker);
-        startTimePicker.setOnTimeChangedListener(startTimeChangedListener);
+        addHoursBtn = (Button) findViewById(R.id.addHoursBtn);
+        Button resetButton = (Button) findViewById(R.id.resetHoursBtn);
+
+        TimePicker startTimePicker = (TimePicker) findViewById(R.id.startTimePicker);
         startTimePicker.setIs24HourView(true);
 
         TimePicker endTimePicker = (TimePicker) findViewById(R.id.endTimePicker);
-        endTimePicker.setOnTimeChangedListener(endTimeChangedListener);
         endTimePicker.setIs24HourView(true);
 
         startHour=8;
@@ -51,16 +52,16 @@ public class MainActivity extends AppCompatActivity {
         endTimePicker.setCurrentHour(18);
         endTimePicker.setCurrentMinute(0);
 
-        addHoursBtn = (Button) findViewById(R.id.addHoursBtn);
+        startTimePicker.setOnTimeChangedListener(startTimeChangedListener);
+        endTimePicker.setOnTimeChangedListener(endTimeChangedListener);
+
         addHoursBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //TODO add check end more than start
                 hoursList.add(GetDifferenceBetweenTimes());
                 UpdateHours();
             }
         });
 
-        Button resetButton = (Button) findViewById(R.id.resetHoursBtn);
         resetButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 hoursList.clear();
@@ -76,6 +77,13 @@ public class MainActivity extends AppCompatActivity {
                 public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
                     startHour = hourOfDay;
                     startMinutes = minute;
+
+                    if(AreDatesValid()){
+                        addHoursBtn.setEnabled(true);
+                    }
+                    else{
+                        addHoursBtn.setEnabled(false);
+                    }
                 }
             };
 
@@ -85,6 +93,13 @@ public class MainActivity extends AppCompatActivity {
                 public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
                     endHour = hourOfDay;
                     endMinutes = minute;
+
+                    if(AreDatesValid()){
+                        addHoursBtn.setEnabled(true);
+                    }
+                    else{
+                        addHoursBtn.setEnabled(false);
+                    }
                 }
             };
 
@@ -124,7 +139,19 @@ public class MainActivity extends AppCompatActivity {
         return new Pair<>(differenceHours,differenceMinutes);
     }
 
-    private boolean AreDateValid(){
+    private boolean AreDatesValid(){
+        Date startDate = new Date();
+        Date endDate = new Date();
+
+        startDate.setHours(startHour);
+        startDate.setMinutes(startMinutes);
+        endDate.setHours(endHour);
+        endDate.setMinutes(endMinutes);
+
+        if(startDate.after(endDate) || endDate.before(startDate)){
+            return false;
+        }
+
         return true;
     }
 
@@ -144,7 +171,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
-
 
     }
 
