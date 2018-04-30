@@ -7,14 +7,23 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TimePicker;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
 
+    Button addHoursBtn;
     final List<Pair<Integer, Integer>> hoursList = new ArrayList<>();
     EditText hoursSumText;
+
+    int startHour;
+    int startMinutes;
+    int endHour;
+    int endMinutes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,11 +32,18 @@ public class MainActivity extends AppCompatActivity {
 
         hoursSumText = (EditText) findViewById(R.id.hoursSumText);
 
-        Button addButton = (Button) findViewById(R.id.addHoursBtn);
-        addButton.setOnClickListener(new View.OnClickListener() {
+        final TimePicker startTimePicker = (TimePicker) findViewById(R.id.startTimePicker);
+        startTimePicker.setOnTimeChangedListener(startTimeChangedListener);
+
+        TimePicker endTimePicker = (TimePicker) findViewById(R.id.endTimePicker);
+        endTimePicker.setOnTimeChangedListener(endTimeChangedListener);
+
+        addHoursBtn = (Button) findViewById(R.id.addHoursBtn);
+        addHoursBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent myIntent = new Intent(MainActivity.this, AddHoursActivity.class);
-                MainActivity.this.startActivityForResult(myIntent, 0);
+                //TODO add check end more than start
+                hoursList.add(GetDifferenceBetweenTimes());
+                UpdateHours();
             }
         });
 
@@ -41,16 +57,29 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private TimePicker.OnTimeChangedListener startTimeChangedListener =
+            new TimePicker.OnTimeChangedListener(){
+                @Override
+                public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                    startHour = hourOfDay;
+                    startMinutes = minute;
+                }
+            };
+
+    private TimePicker.OnTimeChangedListener endTimeChangedListener =
+            new TimePicker.OnTimeChangedListener(){
+                @Override
+                public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
+                    endHour = hourOfDay;
+                    endMinutes = minute;
+                }
+            };
+
     private void UpdateHours(){
         if(hoursList.size() == 0){
             hoursSumText.setText("Aggiungi un orario");
         }
         else{
-            //TimeZone timeZone = TimeZone.getTimeZone("UTC");
-            //final Calendar sum = Calendar.getInstance(timeZone);
-            //sum.setTimeInMillis(0);
-            //sum.setTimeZone(TimeZone.);
-
             int sum = 0;
 
             for(Pair<Integer,Integer> pair:hoursList){
@@ -59,13 +88,27 @@ public class MainActivity extends AppCompatActivity {
 
                 int mins = hours * 60 + minutes;
                 sum += mins;
-
-                //sum.add(Calendar.HOUR, hours);
-                //sum.add(Calendar.MINUTE, minutes);
             }
 
             hoursSumText.setText(Integer.toString((int)Math.floor(sum/60))+": " + Integer.toString(sum % 60 ));
         }
+    }
+
+    private Pair<Integer,Integer> GetDifferenceBetweenTimes(){
+        Date startDate = new Date();
+        Date endDate = new Date();
+
+        startDate.setHours(startHour);
+        startDate.setMinutes(startMinutes);
+        endDate.setHours(endHour);
+        endDate.setMinutes(endMinutes);
+
+        long millis = endDate.getTime() - startDate.getTime();
+
+        int differenceHours = (int) millis/(1000 * 60 * 60);
+        int differenceMinutes = (int) (millis/(1000*60)) % 60;
+
+        return new Pair<>(differenceHours,differenceMinutes);
     }
 
     @Override
