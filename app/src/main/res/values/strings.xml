@@ -7,4 +7,6 @@
     <string name="end_work">End time</string>
     <string name="add_hours">Add hours</string>
     <string name="plus">+</string>
+    <string name="hour">Hour</string>
+    <string name="minutes">Minutes</string>
 </resources>

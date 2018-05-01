@@ -7,4 +7,6 @@
     <string name="reset">Resetta</string>
     <string name="start_work">Orario di inizio</string>
     <string name="work_for">Hai lavorato per</string>
+    <string name="hour">Ore</string>
+    <string name="minutes">Minuti</string>
 </resources>

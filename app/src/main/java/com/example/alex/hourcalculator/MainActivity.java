@@ -16,7 +16,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     Button addHoursBtn;
-    final List<Pair<Integer, Integer>> hoursList = new ArrayList<>();
+    Button resetButton;
     TickerView hoursTickerView;
 
     int startHour;
@@ -24,13 +24,16 @@ public class MainActivity extends AppCompatActivity {
     int endHour;
     int endMinutes;
 
+    final List<Pair<Integer, Integer>> hoursList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Initialize components
         addHoursBtn = (Button) findViewById(R.id.addHoursBtn);
-        Button resetButton = (Button) findViewById(R.id.resetHoursBtn);
+        resetButton = (Button) findViewById(R.id.resetHoursBtn);
 
         TimePicker startTimePicker = (TimePicker) findViewById(R.id.startTimePicker);
         startTimePicker.setIs24HourView(true);
@@ -40,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         hoursTickerView = (TickerView) findViewById(R.id.tickerView);
         hoursTickerView.setCharacterLists(TickerUtils.provideNumberList());
-        hoursTickerView.setText("0 Ore");
+        hoursTickerView.setText("0 " + getResources().getString(R.string.hour));
 
         startHour=8;
         startMinutes=30;
@@ -53,24 +56,30 @@ public class MainActivity extends AppCompatActivity {
         endTimePicker.setCurrentHour(18);
         endTimePicker.setCurrentMinute(0);
 
+        //Set listeners
         startTimePicker.setOnTimeChangedListener(startTimeChangedListener);
         endTimePicker.setOnTimeChangedListener(endTimeChangedListener);
-
-        addHoursBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                hoursList.add(GetDifferenceBetweenTimes());
-                UpdateHours();
-            }
-        });
-
-        resetButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                hoursList.clear();
-                hoursTickerView.setText("0 Ore");
-            }
-        });
+        addHoursBtn.setOnClickListener(addHoursListener);
+        resetButton.setOnClickListener(resetListener);
 
     }
+
+    //LISTENERS
+    private Button.OnClickListener addHoursListener =
+            new View.OnClickListener() {
+                public void onClick(View v) {
+                    hoursList.add(GetDifferenceBetweenTimes());
+                    UpdateHours();
+                }
+            };
+
+    private Button.OnClickListener resetListener =
+            new View.OnClickListener() {
+                public void onClick(View v) {
+                    hoursList.clear();
+                    hoursTickerView.setText("0 " + getResources().getString(R.string.hour));
+                }
+            };
 
     private TimePicker.OnTimeChangedListener startTimeChangedListener =
             new TimePicker.OnTimeChangedListener(){
@@ -90,26 +99,29 @@ public class MainActivity extends AppCompatActivity {
                 }
             };
 
+    //METHODS
     private void UpdateHours(){
-        if(hoursList.size() == 0){
-            hoursTickerView.setText("0 Ore");
+
+        int sum = 0;
+
+        for(Pair<Integer,Integer> pair:hoursList){
+            int hours = pair.first;
+            int minutes = pair.second;
+
+            int mins = hours * 60 + minutes;
+            sum += mins;
         }
-        else{
-            int sum = 0;
 
-            for(Pair<Integer,Integer> pair:hoursList){
-                int hours = pair.first;
-                int minutes = pair.second;
-
-                int mins = hours * 60 + minutes;
-                sum += mins;
-            }
-
-            hoursTickerView.setText(Integer.toString((int)Math.floor(sum/60))+" Ore e " + Integer.toString(sum % 60 ) + " Minuti");
-        }
+        hoursTickerView.setText(
+                Integer.toString((int)Math.floor(sum/60))+
+                        " " +
+                        getResources().getString(R.string.hour) +
+                        " " + Integer.toString(sum % 60 ) +
+                        " " + getResources().getString(R.string.minutes));
     }
 
     private Pair<Integer,Integer> GetDifferenceBetweenTimes(){
+
         Date startDate = new Date();
         Date endDate = new Date();
 
@@ -120,13 +132,13 @@ public class MainActivity extends AppCompatActivity {
 
         long millis;
 
+        //If endTime is less than startTime, add a day to avoid negative results
         if(endDate.getTime() < startDate.getTime()){
             millis = ((endDate.getTime() + 86400000) - startDate.getTime());
         }
         else{
             millis = endDate.getTime() - startDate.getTime();
         }
-
 
         int differenceHours = (int) millis/(1000 * 60 * 60);
         int differenceMinutes = (int) (millis/(1000*60)) % 60;
