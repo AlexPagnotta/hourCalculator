@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Hour Calculator</string>
+    <string name="add_hours">Aggiungi ore</string>
+    <string name="end_work">Orario di fine</string>
+    <string name="plus">+</string>
+    <string name="reset">Resetta</string>
+    <string name="start_work">Orario di inizio</string>
+    <string name="work_for">Hai lavorato per</string>
+    <string name="hour">Ore</string>
+    <string name="minutes">Minuti</string>
+</resources>
