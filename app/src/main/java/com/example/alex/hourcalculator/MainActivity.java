@@ -1,18 +1,13 @@
 package com.example.alex.hourcalculator;
 
-import android.content.Intent;
 import android.support.v4.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TimePicker;
-import android.widget.Toast;
-
 import com.robinhood.ticker.TickerUtils;
 import com.robinhood.ticker.TickerView;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -83,13 +78,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
                     startHour = hourOfDay;
                     startMinutes = minute;
-
-                    if(AreDatesValid()){
-                        addHoursBtn.setEnabled(true);
-                    }
-                    else{
-                        addHoursBtn.setEnabled(false);
-                    }
                 }
             };
 
@@ -99,13 +87,6 @@ public class MainActivity extends AppCompatActivity {
                 public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
                     endHour = hourOfDay;
                     endMinutes = minute;
-
-                    if(AreDatesValid()){
-                        addHoursBtn.setEnabled(true);
-                    }
-                    else{
-                        addHoursBtn.setEnabled(false);
-                    }
                 }
             };
 
@@ -137,28 +118,20 @@ public class MainActivity extends AppCompatActivity {
         endDate.setHours(endHour);
         endDate.setMinutes(endMinutes);
 
-        long millis = endDate.getTime() - startDate.getTime();
+        long millis;
+
+        if(endDate.getTime() < startDate.getTime()){
+            millis = ((endDate.getTime() + 86400000) - startDate.getTime());
+        }
+        else{
+            millis = endDate.getTime() - startDate.getTime();
+        }
+
 
         int differenceHours = (int) millis/(1000 * 60 * 60);
         int differenceMinutes = (int) (millis/(1000*60)) % 60;
 
         return new Pair<>(differenceHours,differenceMinutes);
-    }
-
-    private boolean AreDatesValid(){
-        Date startDate = new Date();
-        Date endDate = new Date();
-
-        startDate.setHours(startHour);
-        startDate.setMinutes(startMinutes);
-        endDate.setHours(endHour);
-        endDate.setMinutes(endMinutes);
-
-        if(startDate.after(endDate) || endDate.before(startDate)){
-            return false;
-        }
-
-        return true;
     }
 
 }
